@@ -1,11 +1,11 @@
 <mxfile>
     <diagram id="eW4yQkm-LDh8UukcXhk5" name="Page-1">
-        <mxGraphModel dx="946" dy="558" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="543" dy="291" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="2" value="" style="whiteSpace=wrap;html=1;aspect=fixed;fontStyle=0" vertex="1" parent="1">
-                    <mxGeometry x="110" y="10" width="700" height="700" as="geometry"/>
+                    <mxGeometry x="110" width="700" height="700" as="geometry"/>
                 </mxCell>
                 <mxCell id="3" value="Game Table" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
                     <mxGeometry x="170" y="80" width="100" height="40" as="geometry"/>
@@ -13,13 +13,10 @@
                 <mxCell id="4" value="Has many Users" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
                     <mxGeometry x="160" y="150" width="100" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="5" value="Has many Turns" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-                    <mxGeometry x="150" y="180" width="120" height="20" as="geometry"/>
-                </mxCell>
                 <mxCell id="7" value="id - pk" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
                     <mxGeometry x="160" y="120" width="70" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="8" value="User Table - FE" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
+                <mxCell id="8" value="User Table&amp;nbsp;" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
                     <mxGeometry x="375" y="80" width="115" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="10" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
@@ -65,10 +62,10 @@
                     <mxGeometry x="610" y="330" width="40" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="28" value="Active?" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-                    <mxGeometry x="170" y="210" width="40" height="20" as="geometry"/>
+                    <mxGeometry x="160" y="180" width="40" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="30" value="Game_summary" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-                    <mxGeometry x="160" y="230" width="95" height="20" as="geometry"/>
+                    <mxGeometry x="152.5" y="210" width="95" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="31" value="User_story/summary" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
                     <mxGeometry x="167.5" y="420" width="80" height="20" as="geometry"/>
@@ -101,7 +98,7 @@
                     <mxGeometry x="600" y="400" width="50" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="57" value="turn_counter" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-                    <mxGeometry x="150" y="250" width="75" height="30" as="geometry"/>
+                    <mxGeometry x="150" y="230" width="75" height="30" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
