@@ -27,6 +27,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 #For authentication
 gem 'knock'
+gem 'fast_jsonapi'
+gem 'json'
+gem 'active_model_serializers'
 
 group :development, :test do
   gem 'pry'
