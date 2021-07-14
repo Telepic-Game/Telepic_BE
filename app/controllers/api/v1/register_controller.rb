@@ -4,7 +4,7 @@ class Api::V1::RegisterController < ApplicationController
     user = User.new(
                     email: user_params[:email].downcase,
                     password: user_params[:password],
-                    password_confirmation: params[:password_confirmation], api_key: SecureRandom.hex
+                    password_confirmation: params[:password_confirmation]
                   )
     if user.save
       render json: UserSerializer.new(user), status: :created

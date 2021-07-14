@@ -5,8 +5,10 @@ RSpec.describe 'User authentication', type: :request do
     User.destroy_all
     attributes = {
       "email": "example@whatever.com",
-      "password_digest": "password123",
-    }
+      "password": "password123",
+      "password_digest": "password123"
+      }
+
     post api_v1_register_index_path, params: attributes
 
     user = JSON.parse(response.body, symbolize_names: true)

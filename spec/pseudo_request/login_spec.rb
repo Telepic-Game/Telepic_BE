@@ -6,8 +6,9 @@ RSpec.describe 'User login', type: :request do
 
     attributes_1 = {
       "email": "example@whatever.com",
-      "password_digest": "password123",
-    }
+      "password": "password123",
+      "password_digest": "password123"
+      }
 
     post api_v1_register_index_path, params: attributes_1
 
@@ -22,7 +23,7 @@ RSpec.describe 'User login', type: :request do
       password_digest: "password123",
       password_confirmation: "password123"
     }
-    require "pry"; binding.pry
+
     post api_v1_login_index_path, params: attributes_2
 
     user = JSON.parse(response.body, symbolize_names: true)
