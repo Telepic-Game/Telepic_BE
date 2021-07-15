@@ -3,11 +3,12 @@ require 'rails_helper'
 RSpec.describe 'User authentication', type: :request do
   it 'User can be registered' do
     User.destroy_all
+    
     attributes = {
       "email": "example@whatever.com",
       "password": "password123",
       "password_digest": "password123"
-      }
+    }
 
     post api_v1_register_index_path, params: attributes
 
@@ -29,10 +30,12 @@ RSpec.describe 'User authentication', type: :request do
   end
   it 'User will not be registered, when given blank input' do
     User.destroy_all
+
     attributes = {
       "email": "",
       "password_digest": "password123",
     }
+
     post api_v1_register_index_path, params: attributes
 
     expect(response).not_to be_successful
