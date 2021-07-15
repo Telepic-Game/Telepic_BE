@@ -1,6 +1,7 @@
 class Api::V1::LoginController < ApplicationController
 
   def create
+    #This is for the login
     user = User.find_by(email: user_params["email"])
     if user && user.authenticate(params["password_digest"])
       render json: LoginSerializer.new(user), status: 200

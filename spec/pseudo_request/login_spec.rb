@@ -58,5 +58,4 @@ RSpec.describe 'User login', type: :request do
     expect(response.status).to eq(400)
     expect(user[:message][:error]).to eq("There was an error with your login attempt.")
   end
-
 end
