@@ -17,10 +17,6 @@ class Api::V1::RegisterController < ApplicationController
     end
   end
 
-  def destroy
-    User.destroy_all
-  end
-
   private
 
   def user_params
