@@ -1,4 +1,4 @@
--(https://dbdesigner.page.link/iqBvWSPzXhzFGWg38)schema
+[Schema](https://dbdesigner.page.link/iqBvWSPzXhzFGWg38)
 
 <!-- PROJECT SHIELDS -->
 <!--
