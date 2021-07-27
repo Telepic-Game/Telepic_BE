@@ -1,6 +1,6 @@
 class Api::V1::TestController < ApplicationController
 
-  def destroy_users
-    User.destroy_all
+  def destroy_players
+    Player.destroy_all
   end
 end

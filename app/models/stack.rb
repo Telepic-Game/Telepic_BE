@@ -1,4 +1,4 @@
 class Stack < ApplicationRecord
-  has_many :user_games
+  belongs_to :player
   has_many :cards
 end

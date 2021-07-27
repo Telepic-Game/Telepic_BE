@@ -1,9 +1,9 @@
 FactoryBot.define do
-  factory :user_game do
+  factory :player_game do
     game { nil }
-    user { nil }
+    player { nil }
     stack { nil }
-    user_story { "" }
-    username { "MyString" }
+    player_story { "" }
+    playername { "MyString" }
   end
 end

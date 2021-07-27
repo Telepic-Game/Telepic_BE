@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :user do
+  factory :player do
     email { "MyString" }
     password { "" }
-    user_stories { "" }
+    player_stories { "" }
   end
 end

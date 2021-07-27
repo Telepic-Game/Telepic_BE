@@ -1,25 +1,25 @@
 class Api::V1::RegisterController < ApplicationController
 
   def create
-    if user_params[:email] == user_params[:verify_email]
-      user = User.new(
-                      email: user_params[:email].downcase,
-                      password: user_params[:password],
+    if player_params[:email] == player_params[:verify_email]
+      player = Player.new(
+                      email: player_params[:email].downcase,
+                      password: player_params[:password],
                       password_confirmation: params[:password_confirmation]
                     )
-      if user.save
-        render json: UserSerializer.new(user), status: :created
+      if player.save
+        render json: PlayerSerializer.new(player), status: :created
       else
-        render json: {'message': {'error': "User was not registered" }}, status: :bad_request
+        render json: {'message': {'error': "Player was not registered" }}, status: :bad_request
       end
     else
-      render json: {'message': {'error': "User was not registered" }}, status: :bad_request
+      render json: {'message': {'error': "Player was not registered" }}, status: :bad_request
     end
   end
 
   private
 
-  def user_params
+  def player_params
     params.permit(:email, :verify_email, :password, :password_confirmation)
   end
 end
