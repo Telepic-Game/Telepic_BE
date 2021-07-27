@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_02_183137) do
+ActiveRecord::Schema.define(version: 2021_07_27_004630) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,34 +32,52 @@ ActiveRecord::Schema.define(version: 2021_07_02_183137) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "stacks", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "user_games", force: :cascade do |t|
+  create_table "player_games", force: :cascade do |t|
     t.bigint "game_id", null: false
-    t.bigint "user_id", null: false
-    t.bigint "stack_id", null: false
-    t.json "user_story"
+    t.bigint "player_id", null: false
+    t.json "player_story"
     t.string "username"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["game_id"], name: "index_user_games_on_game_id"
-    t.index ["stack_id"], name: "index_user_games_on_stack_id"
-    t.index ["user_id"], name: "index_user_games_on_user_id"
+    t.index ["game_id"], name: "index_player_games_on_game_id"
+    t.index ["player_id"], name: "index_player_games_on_player_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "players", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
-    t.json "user_stories"
+    t.json "player_stories"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "permissions"
+  end
+
+  create_table "stacks", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "player_id"
+    t.index ["player_id"], name: "index_stacks_on_player_id"
+  end
+
+  create_table "waiting_room_players", force: :cascade do |t|
+    t.bigint "waiting_room_id", null: false
+    t.bigint "player_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id"], name: "index_waiting_room_players_on_player_id"
+    t.index ["waiting_room_id"], name: "index_waiting_room_players_on_waiting_room_id"
+  end
+
+  create_table "waiting_rooms", force: :cascade do |t|
+    t.string "room_code"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   add_foreign_key "cards", "stacks"
-  add_foreign_key "user_games", "games"
-  add_foreign_key "user_games", "stacks"
-  add_foreign_key "user_games", "users"
+  add_foreign_key "player_games", "games"
+  add_foreign_key "player_games", "players"
+  add_foreign_key "stacks", "players"
+  add_foreign_key "waiting_room_players", "players"
+  add_foreign_key "waiting_room_players", "waiting_rooms"
 end
