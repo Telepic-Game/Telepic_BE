@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       delete "/test/database_all", to: "test#destroy_database"
 
       # Waiting Rooms
+      get 'waiting_room', to: "waiting_room#get"
       post 'open_waiting_room', to: "waiting_room#create"
      end
   end
