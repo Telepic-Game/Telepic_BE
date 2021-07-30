@@ -23,19 +23,50 @@ class Api::V1::WaitingRoomController < ApplicationController
       username: params[:username],
     )
     to_render = OpenStruct.new(
-      waiting_room: waiting_room,
-      player: player,
+      waiting_room: "Waiting Room #{waiting_room.id} is Open",
+      player: player.email,
     )
 
-    render json: WaitingRoomSerializer.new(to_render), status: 200
+    render json: WaitingRoomSerializer.new(to_render), status: 201
   end
 
-  # def create_more_players
-    # waiting_room = WaitingRoom.find_by(room_code: params[:room_code])
-
-    # wrp = WaitingRoomPlayer.new(
-    #   waiting_room: waiting_room,
-    #   player: player
-    # )
-  # end
+  def create_more_players
+    waiting_room = WaitingRoom.find_by(room_code: params[:room_code])
+    # We need to make 2 paths, one for the guests, one for a registered user
+    if !params[:email]
+      player = Player.create(
+        password: 'guest',
+        permissions: 0
+      )
+      require "pry"; binding.pry
+      wrp = WaitingRoomPlayer.new(
+        waiting_room: waiting_room,
+        player: player,
+        username: params[:username]
+      )
+      to_render = OpenStruct.new(
+        waiting_room: waiting_room.id,
+        player: {
+          'Player ID': player.id,
+           'Player username': wrp.username
+          }
+        )
+      render json: WaitingRoomSerializer.new(to_render), status: 201
+    elsif params[:email]
+      player = Player.find_by(email: params[:email])
+      wrp = WaitingRoomPlayer.new(
+        waiting_room: waiting_room,
+        player: player,
+        username: params[:username]
+      )
+      to_render = OpenStruct.new(
+        waiting_room: waiting_room.id,
+        player: {
+          'Player ID': player.id,
+           'Player username': wrp.username
+          }
+        )
+      render json: WaitingRoomSerializer.new(to_render), status: 201
+    end
+  end
 end
