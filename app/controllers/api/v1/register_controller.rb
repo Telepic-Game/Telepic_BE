@@ -1,11 +1,12 @@
 class Api::V1::RegisterController < ApplicationController
 
   def create
-    if player_params[:email] == player_params[:verify_email]
+    if player_params[:email] == player_params[:verify_email] && !player_params[:email].blank?
       player = Player.new(
                       email: player_params[:email].downcase,
                       password: player_params[:password],
-                      password_confirmation: params[:password_confirmation]
+                      password_confirmation: params[:password_confirmation],
+                      permissions: 1
                     )
       if player.save
         render json: PlayerSerializer.new(player), status: :created

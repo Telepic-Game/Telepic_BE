@@ -33,7 +33,7 @@ RSpec.describe 'Create Waiting Room', type: :request do
     post api_v1_non_host_join_waiting_room_path, params: attributes
 
     expected = JSON.parse(response.body, symbolize_names: true)
-# require "pry"; binding.pry
+
     expect(response).to be_successful
     expect(response.status).to eq(201)
   end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Player authentication', type: :request do
-  it 'Player can be registered' do
+  it 'Player can be registered with permission of 1' do
     Player.destroy_all
 
     attributes = {
@@ -28,6 +28,7 @@ RSpec.describe 'Player authentication', type: :request do
     expect(player[:data][:type]).to eq("player")
     expect(player[:data][:attributes][:email]).to eq("example@whatever.com")
     expect(player[:data][:attributes][:email]).to be_a(String)
+    expect(player[:data][:attributes][:permissions]).to eq("registered")
   end
   it 'Player will not be registered, when given blank input' do
     Player.destroy_all
