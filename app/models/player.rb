@@ -1,6 +1,11 @@
 class Player < ApplicationRecord
-  validates :email, presence: true, uniqueness: true
   validates :password, confirmation: true
+
+  enum permissions: {
+    guest: 0,
+    registered: 1,
+    host: 2,
+    }
 
   has_secure_password
 
