@@ -39,42 +39,46 @@ class Api::V1::WaitingRoomController < ApplicationController
 
   def create_more_players
     waiting_room = WaitingRoom.find_by(room_code: params[:room_code])
-    require "pry"; binding.pry
+    # Registered player path
+    if !params[:email].nil?
+      player = Player.find_by(email: params[:email])
+      wrp = WaitingRoomPlayer.create(
+        waiting_room: waiting_room,
+        player: player,
+        username: params[:username]
+      )
+      # Add player model
+      to_render = OpenStruct.new(
+        waiting_room: waiting_room.id,
+        player: {
+            'Player ID': player.id,
+            'Player username': wrp.username,
+            'Permissions': player.permissions
+          }
+        )
+      render json: WaitingRoomSerializer.new(to_render), status: 201
     # Guest player path
-      if !params[:email].nil?
-        player = Player.find_by(email: params[:email])
-        wrp = WaitingRoomPlayer.create(
-          waiting_room: waiting_room,
-          player: player,
-          username: params[:username]
+    else
+      # Create guest player
+      player = Player.create(
+        email: params[:username],
+        password: params[:room_code],
+        permissions: 0,
+      )
+      wrp = WaitingRoomPlayer.create(
+        waiting_room: waiting_room,
+        player: player,
+        username: params[:username]
+      )
+      to_render = OpenStruct.new(
+        waiting_room: waiting_room.id,
+        player: {
+            'player_id': player.id,
+            'player_username': wrp.username,
+            'permissions': player.permissions
+          }
         )
-        # Add player model
-        to_render = OpenStruct.new(
-          waiting_room: waiting_room.id,
-          player: {
-              'Player ID': player.id,
-              'Player username': wrp.username,
-              'Permissions': player.permissions
-            }
-          )
-        render json: WaitingRoomSerializer.new(to_render), status: 201
-      # Registered player path
-      else
-        wrp = WaitingRoomPlayer.create(
-          waiting_room: waiting_room,
-          player: player,
-          username: params[:username]
-        )
-        to_render = OpenStruct.new(
-          waiting_room: waiting_room.id,
-          player: {
-              'Player ID': player.id,
-              'Player username': wrp.username,
-              'Permissions': player.permissions
-            }
-          )
-        render json: WaitingRoomSerializer.new(to_render), status: 201
-
-      end
+      render json: WaitingRoomSerializer.new(to_render), status: 201
     end
   end
+end
