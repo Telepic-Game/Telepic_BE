@@ -23,6 +23,7 @@ class Api::V1::WaitingRoomController < ApplicationController
   def create
     # Host player path
     player = Player.find_by(email: params[:email])
+    player.permissions = 2
     waiting_room = WaitingRoom.create
     WaitingRoomPlayer.create(
       waiting_room: waiting_room,
@@ -51,9 +52,9 @@ class Api::V1::WaitingRoomController < ApplicationController
       to_render = OpenStruct.new(
         waiting_room: waiting_room.id,
         player: {
-            'Player ID': player.id,
-            'Player username': wrp.username,
-            'Permissions': player.permissions
+            'player_id': player.id,
+            'player_username': wrp.username,
+            'permissions': player.permissions
           }
         )
       render json: WaitingRoomSerializer.new(to_render), status: 201
