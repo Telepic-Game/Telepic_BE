@@ -25,14 +25,28 @@ class Api::V1::WaitingRoomController < ApplicationController
     player = Player.find_by(email: params[:email])
     player.permissions = 2
     waiting_room = WaitingRoom.create
+    # Host creates a new game
+    game = Game.create(
+      turn_counter: 2,
+    )
+    # Host PlayerGame is created
+    player_game = PlayerGame.create(
+      game_id: game.id,
+      player_id: player.id,
+      username: params[:username],
+    )
+    # Host WaitingRoomPlayer is created
     WaitingRoomPlayer.create(
       waiting_room: waiting_room,
       player: player,
       username: params[:username],
     )
+    # Response
     to_render = OpenStruct.new(
       waiting_room: "Waiting Room #{waiting_room.id} is Open",
-      player: player
+      player: {email: player.email, id: player.id},
+      game: game,
+      player_game: player_game,
     )
 
     render json: WaitingRoomSerializer.new(to_render), status: 201
@@ -43,6 +57,7 @@ class Api::V1::WaitingRoomController < ApplicationController
     # Registered player path
     if !params[:email].nil?
       player = Player.find_by(email: params[:email])
+      # Make player games
       wrp = WaitingRoomPlayer.create(
         waiting_room: waiting_room,
         player: player,
@@ -66,6 +81,7 @@ class Api::V1::WaitingRoomController < ApplicationController
         password: params[:room_code],
         permissions: 0,
       )
+      # Create guest player game
       wrp = WaitingRoomPlayer.create(
         waiting_room: waiting_room,
         player: player,
