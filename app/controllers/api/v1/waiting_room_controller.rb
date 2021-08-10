@@ -4,7 +4,7 @@ class Api::V1::WaitingRoomController < ApplicationController
     player = Player.find_by(email: params[:email])
     waiting_room_player = WaitingRoomPlayer.find_by(player_id: player.id)
     waiting_room = waiting_room_player.waiting_room
-
+    require 'pry'; binding.pry
     # Create openstruct object to pass to serializer
     to_render = OpenStruct.new(
           waiting_room: waiting_room_player.waiting_room,
@@ -24,11 +24,13 @@ class Api::V1::WaitingRoomController < ApplicationController
     # Host player path
     player = Player.find_by(email: params[:email])
     player.permissions = 2
+
     waiting_room = WaitingRoom.create
     # Host creates a new game
     game = Game.create(
       turn_counter: 2,
     )
+    # TODO Need to create stack with cards
     # Host PlayerGame is created
     player_game = PlayerGame.create(
       game_id: game.id,
@@ -58,6 +60,7 @@ class Api::V1::WaitingRoomController < ApplicationController
     if !params[:email].nil?
       player = Player.find_by(email: params[:email])
       # Make player games
+      # TODO Make stack & cards
       wrp = WaitingRoomPlayer.create(
         waiting_room: waiting_room,
         player: player,
@@ -67,13 +70,13 @@ class Api::V1::WaitingRoomController < ApplicationController
       to_render = OpenStruct.new(
         waiting_room: waiting_room.id,
         player: {
-            'player_id': player.id,
-            'player_username': wrp.username,
-            'permissions': player.permissions
-          }
-        )
+          'player_id': player.id,
+          'player_username': wrp.username,
+          'permissions': player.permissions
+        }
+      )
       render json: WaitingRoomSerializer.new(to_render), status: 201
-    # Guest player path
+      # Guest player path
     else
       # Create guest player
       player = Player.create(
@@ -81,6 +84,7 @@ class Api::V1::WaitingRoomController < ApplicationController
         password: params[:room_code],
         permissions: 0,
       )
+      # TODO Make stack & cards
       # Create guest player game
       wrp = WaitingRoomPlayer.create(
         waiting_room: waiting_room,
