@@ -51,7 +51,10 @@ class Api::V1::WaitingRoomController < ApplicationController
     )
      # Response
     to_render = OpenStruct.new(
-      waiting_room: "Waiting Room #{waiting_room.id} is Open",
+      waiting_room: {
+        status: "Waiting Room #{waiting_room.id} is Open",
+        room_code: waiting_room.room_code,
+      },
       player: {email: player.email, id: player.id},
       game: game,
       player_game: player_game,
