@@ -72,6 +72,12 @@ class Api::V1::WaitingRoomController < ApplicationController
         player: player,
         username: params[:username]
       )
+      # Create player game
+      player_game = PlayerGame.create(
+        game_id: waiting_room.games.first.id,
+        player_id: player.id,
+        username: params[:username],
+      )
       # Add player model
       to_render = OpenStruct.new(
         waiting_room: waiting_room.id,
@@ -79,7 +85,9 @@ class Api::V1::WaitingRoomController < ApplicationController
           'id': player.id,
           'player_username': wrp.username,
           'permissions': player.permissions
-        }
+        },
+        game: waiting_room.games.first,
+        player_game: player_game,
       )
       render json: WaitingRoomSerializer.new(to_render), status: 201
       # Guest player path

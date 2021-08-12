@@ -13,6 +13,11 @@ RSpec.describe 'As a non-host joining a game', type: :request do
       password_digest: 'word123',
       permissions: 2,
     )
+    @player_2 = Player.create(
+      email: 'taoistcowboy@gmail.com',
+      password_digest: 'testtest',
+      permissions: 1,
+    )
     @waiting_room = WaitingRoom.create
     WaitingRoomPlayer.create(
       waiting_room: @waiting_room,
@@ -44,5 +49,24 @@ RSpec.describe 'As a non-host joining a game', type: :request do
     expect(expected.dig(:data, :attributes).keys).to include(:game)
     expect(expected.dig(:data, :attributes).keys).to include(:player_game)
     expect(expected.dig(:data, :attributes, :player_game, :username)).to eq('somebody_people')
+  end
+  it 'As a registered player, player game is created for the correct game via room code' do
+    attributes = {
+      email: @player_2.email,
+      room_code: @room_code,
+      username: 'taoistcowboy',
+    }
+
+    post api_v1_non_host_join_waiting_room_path, params: attributes
+
+    expected = JSON.parse(response.body, symbolize_names: true)
+
+    require 'pry'; binding.pry
+
+    expect(response).to be_successful
+    expect(response.status).to eq(201)
+    expect(expected.dig(:data, :attributes).keys).to include(:game)
+    expect(expected.dig(:data, :attributes).keys).to include(:player_game)
+    expect(expected.dig(:data, :attributes, :player_game, :username)).to eq('taoistcowboy')
   end
 end
