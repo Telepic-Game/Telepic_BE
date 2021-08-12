@@ -1,16 +1,17 @@
 require 'rails_helper'
 
-RSpec.describe 'Create Waiting Room', type: :request do
+RSpec.describe 'As a non-host joining a game', type: :request do
   before :each do
-    # db = Api::V1::TestController.new
-    # db.destroy_database
     WaitingRoomPlayer.destroy_all
     Player.destroy_all
     WaitingRoom.destroy_all
+    PlayerGame.destroy_all
+    Game.destroy_all
+
     @player_1 = Player.create(
       email: 'elonsmusk@gmail.com',
       password_digest: 'word123',
-      permissions: 1
+      permissions: 2,
     )
     @waiting_room = WaitingRoom.create
     WaitingRoomPlayer.create(
@@ -19,11 +20,19 @@ RSpec.describe 'Create Waiting Room', type: :request do
       username: 'elonsmusk',
     )
     @room_code = @waiting_room.room_code
+    @game = Game.create(
+      turn_counter: 2,
+    )
+    PlayerGame.create(
+      game_id: @game.id,
+      player_id: @player_1.id,
+      username: 'elonsmusk',
+    )
   end
-  it 'Can create waiting room with player pemission status changes' do
+  it 'As a guest, player game is created for the correct game via room code' do
     attributes = {
       room_code: @room_code,
-      username: 'taoistcowboy'
+      username: 'somebody_people',
     }
 
     post api_v1_non_host_join_waiting_room_path, params: attributes
@@ -32,5 +41,8 @@ RSpec.describe 'Create Waiting Room', type: :request do
 
     expect(response).to be_successful
     expect(response.status).to eq(201)
+    expect(expected.dig(:data, :attributes).keys).to include(:game)
+    expect(expected.dig(:data, :attributes).keys).to include(:player_game)
+    expect(expected.dig(:data, :attributes, :player_game, :username)).to eq('somebody_people')
   end
 end

@@ -4,7 +4,11 @@ class Api::V1::WaitingRoomController < ApplicationController
     player = Player.find_by(email: params[:email])
     waiting_room_player = WaitingRoomPlayer.find_by(player_id: player.id)
     waiting_room = waiting_room_player.waiting_room
-    require 'pry'; binding.pry
+    game = waiting_room.games.first
+    player_game = PlayerGame.find_by(
+      game_id: game.id,
+      player_id: player.id
+    )
     # Create openstruct object to pass to serializer
     to_render = OpenStruct.new(
           waiting_room: waiting_room_player.waiting_room,
@@ -14,7 +18,9 @@ class Api::V1::WaitingRoomController < ApplicationController
             "username": waiting_room_player.username, "permissions": player.permissions
           },
           "all_players": waiting_room.waiting_room_players
-        }
+        },
+          game: game,
+          player_game: player_game,
       )
 
     render json: WaitingRoomSerializer.new(to_render), status: 200
@@ -43,7 +49,7 @@ class Api::V1::WaitingRoomController < ApplicationController
       player: player,
       username: params[:username],
     )
-    # Response
+     # Response
     to_render = OpenStruct.new(
       waiting_room: "Waiting Room #{waiting_room.id} is Open",
       player: {email: player.email, id: player.id},
@@ -70,7 +76,7 @@ class Api::V1::WaitingRoomController < ApplicationController
       to_render = OpenStruct.new(
         waiting_room: waiting_room.id,
         player: {
-          'player_id': player.id,
+          'id': player.id,
           'player_username': wrp.username,
           'permissions': player.permissions
         }
@@ -84,20 +90,28 @@ class Api::V1::WaitingRoomController < ApplicationController
         password: params[:room_code],
         permissions: 0,
       )
-      # TODO Make stack & cards
-      # Create guest player game
       wrp = WaitingRoomPlayer.create(
         waiting_room: waiting_room,
         player: player,
         username: params[:username]
       )
+      # Create player game
+      player_game = PlayerGame.create(
+        game_id: waiting_room.games.first.id,
+        player_id: player.id,
+        username: params[:username],
+      )
+      # TODO Make stack & cards
+      # Create guest player game
       to_render = OpenStruct.new(
         waiting_room: waiting_room.id,
         player: {
-            'player_id': player.id,
+            'id': player.id,
             'player_username': wrp.username,
             'permissions': player.permissions
-          }
+          },
+        game: waiting_room.games.first,
+        player_game: player_game,
         )
       render json: WaitingRoomSerializer.new(to_render), status: 201
     end
