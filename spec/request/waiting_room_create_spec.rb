@@ -12,10 +12,6 @@ RSpec.describe 'Create Waiting Room', type: :request do
       password_digest: 'word123',
       permissions: 1
     )
-    # @player_2 = Player.create(
-    #   password_digest: 'guest',
-    #   permissions: 0
-    # )
     @waiting_room = WaitingRoom.create
     WaitingRoomPlayer.create(
       waiting_room: @waiting_room,

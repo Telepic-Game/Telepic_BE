@@ -4,7 +4,11 @@ class Api::V1::WaitingRoomController < ApplicationController
     player = Player.find_by(email: params[:email])
     waiting_room_player = WaitingRoomPlayer.find_by(player_id: player.id)
     waiting_room = waiting_room_player.waiting_room
-
+    game = waiting_room.games.first
+    player_game = PlayerGame.find_by(
+      game_id: game.id,
+      player_id: player.id
+    )
     # Create openstruct object to pass to serializer
     to_render = OpenStruct.new(
           waiting_room: waiting_room_player.waiting_room,
@@ -14,7 +18,9 @@ class Api::V1::WaitingRoomController < ApplicationController
             "username": waiting_room_player.username, "permissions": player.permissions
           },
           "all_players": waiting_room.waiting_room_players
-        }
+        },
+          game: game,
+          player_game: player_game,
       )
 
     render json: WaitingRoomSerializer.new(to_render), status: 200
@@ -24,15 +30,34 @@ class Api::V1::WaitingRoomController < ApplicationController
     # Host player path
     player = Player.find_by(email: params[:email])
     player.permissions = 2
+
     waiting_room = WaitingRoom.create
+    # Host creates a new game
+    game = Game.create(
+      turn_counter: 2,
+    )
+    # TODO Need to create stack with cards
+    # Host PlayerGame is created
+    player_game = PlayerGame.create(
+      game_id: game.id,
+      player_id: player.id,
+      username: params[:username],
+    )
+    # Host WaitingRoomPlayer is created
     WaitingRoomPlayer.create(
       waiting_room: waiting_room,
       player: player,
       username: params[:username],
     )
+     # Response
     to_render = OpenStruct.new(
-      waiting_room: "Waiting Room #{waiting_room.id} is Open",
-      player: player
+      waiting_room: {
+        status: "Waiting Room #{waiting_room.id} is Open",
+        room_code: waiting_room.room_code,
+      },
+      player: {email: player.email, id: player.id},
+      game: game,
+      player_game: player_game,
     )
 
     render json: WaitingRoomSerializer.new(to_render), status: 201
@@ -43,22 +68,32 @@ class Api::V1::WaitingRoomController < ApplicationController
     # Registered player path
     if !params[:email].nil?
       player = Player.find_by(email: params[:email])
+      # Make player games
+      # TODO Make stack & cards
       wrp = WaitingRoomPlayer.create(
         waiting_room: waiting_room,
         player: player,
         username: params[:username]
       )
+      # Create player game
+      player_game = PlayerGame.create(
+        game_id: waiting_room.games.first.id,
+        player_id: player.id,
+        username: params[:username],
+      )
       # Add player model
       to_render = OpenStruct.new(
         waiting_room: waiting_room.id,
         player: {
-            'player_id': player.id,
-            'player_username': wrp.username,
-            'permissions': player.permissions
-          }
-        )
+          'id': player.id,
+          'player_username': wrp.username,
+          'permissions': player.permissions
+        },
+        game: waiting_room.games.first,
+        player_game: player_game,
+      )
       render json: WaitingRoomSerializer.new(to_render), status: 201
-    # Guest player path
+      # Guest player path
     else
       # Create guest player
       player = Player.create(
@@ -71,13 +106,23 @@ class Api::V1::WaitingRoomController < ApplicationController
         player: player,
         username: params[:username]
       )
+      # Create player game
+      player_game = PlayerGame.create(
+        game_id: waiting_room.games.first.id,
+        player_id: player.id,
+        username: params[:username],
+      )
+      # TODO Make stack & cards
+      # Create guest player game
       to_render = OpenStruct.new(
         waiting_room: waiting_room.id,
         player: {
-            'player_id': player.id,
+            'id': player.id,
             'player_username': wrp.username,
             'permissions': player.permissions
-          }
+          },
+        game: waiting_room.games.first,
+        player_game: player_game,
         )
       render json: WaitingRoomSerializer.new(to_render), status: 201
     end
