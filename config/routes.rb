@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       get 'waiting_room', to: "waiting_room#get"
       post 'open_waiting_room', to: "waiting_room#create"
       post 'non_host_join_waiting_room', to: "waiting_room#create_more_players"
+
+      #Games
+      patch 'start_game', to: "games#start"
      end
   end
 end
