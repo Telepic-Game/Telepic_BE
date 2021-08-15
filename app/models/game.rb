@@ -8,4 +8,7 @@ class Game < ApplicationRecord
   has_many :stacks, through: :players
   has_many :cards, through: :stacks
 
+  def calculate_rounds
+    self.turn_counter = players.count * 2
+  end
 end

@@ -8,6 +8,7 @@ class Api::V1::GamesController < ApplicationController
     if game
       # Game.all.first = true
       # Game.update(game.id, :active => true)
+      game.calculate_rounds
       game.update(active: true)
       game.save
       to_render = OpenStruct.new(
