@@ -9,6 +9,5 @@ RSpec.describe Game, type: :model do
   end
   describe 'Validations' do
     it { should validate_presence_of(:turn_counter) }
-    # it { should validate_presence_of(:active) }
   end
 end
