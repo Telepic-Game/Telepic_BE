@@ -61,8 +61,6 @@ RSpec.describe 'As a non-host joining a game', type: :request do
 
     expected = JSON.parse(response.body, symbolize_names: true)
 
-    require 'pry'; binding.pry
-
     expect(response).to be_successful
     expect(response.status).to eq(201)
     expect(expected.dig(:data, :attributes).keys).to include(:game)
