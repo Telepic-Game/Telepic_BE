@@ -8,7 +8,7 @@ RSpec.describe Game, type: :model do
     it { should have_many(:cards).through(:stacks) }
   end
   describe 'Validations' do
-    it { should validate_presence_of(:active) }
     it { should validate_presence_of(:turn_counter) }
+    # it { should validate_presence_of(:active) }
   end
 end
