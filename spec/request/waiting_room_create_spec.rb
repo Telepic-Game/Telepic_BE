@@ -13,6 +13,15 @@ RSpec.describe 'Create Waiting Room', type: :request do
       permissions: 1
     )
     @waiting_room = WaitingRoom.create
+    @game = Game.create(
+      turn_counter: 2,
+      active: false,
+    )
+    @player_game = PlayerGame.create(
+      game_id: @game.id,
+      player_id: @player_1.id,
+      username: 'elonsmusk',
+    )
     WaitingRoomPlayer.create(
       waiting_room: @waiting_room,
       player: @player_1,
@@ -29,7 +38,6 @@ RSpec.describe 'Create Waiting Room', type: :request do
     post api_v1_non_host_join_waiting_room_path, params: attributes
 
     expected = JSON.parse(response.body, symbolize_names: true)
-
     expect(response).to be_successful
     expect(response.status).to eq(201)
   end

@@ -5,6 +5,7 @@ class Api::V1::WaitingRoomController < ApplicationController
     waiting_room_player = WaitingRoomPlayer.find_by(player_id: player.id)
     waiting_room = waiting_room_player.waiting_room
     game = waiting_room.games.first
+    # require "pry"; binding.pry
     player_game = PlayerGame.find_by(
       game_id: game.id,
       player_id: player.id
@@ -35,6 +36,7 @@ class Api::V1::WaitingRoomController < ApplicationController
     # Host creates a new game
     game = Game.create(
       turn_counter: 2,
+      active: false,
     )
     # TODO Need to create stack with cards
     # Host PlayerGame is created
