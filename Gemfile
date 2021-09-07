@@ -35,6 +35,7 @@ gem 'json'
 gem 'active_model_serializers'
 gem 'securerandom'
 gem 'hirb', '~> 0.7.3'
+# gem 'hotwire'
 
 group :development, :test do
   gem 'pry'

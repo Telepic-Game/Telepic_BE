@@ -4,7 +4,7 @@ class Api::V1::WaitingRoomController < ApplicationController
     player = Player.find_by(email: params[:email])
     waiting_room_player = WaitingRoomPlayer.find_by(player_id: player.id)
     waiting_room = waiting_room_player.waiting_room
-    game = waiting_room.games.first
+    game = waiting_room.games.last
     # require "pry"; binding.pry
     player_game = PlayerGame.find_by(
       game_id: game.id,
@@ -31,6 +31,7 @@ class Api::V1::WaitingRoomController < ApplicationController
     # Host player path
     player = Player.find_by(email: params[:email])
     player.permissions = 2
+    player.save
 
     waiting_room = WaitingRoom.create
     # Host creates a new game
